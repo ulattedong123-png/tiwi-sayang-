@@ -2,188 +2,214 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Untuk Kamu 💖</title>
+<title>semoga kamu suka ya 💖</title>
 
 <style>
 body {
   margin: 0;
+  background: black;
   overflow: hidden;
   font-family: 'Segoe UI', sans-serif;
-  color: #ffc0cb;
-
-  background: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa') no-repeat center/cover;
+  color: white;
 }
 
-/* TEXT */
-#textBox {
+/* INTRO */
+#intro {
   position: absolute;
-  top: 40%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: radial-gradient(circle, #1a001f, #000);
+}
+
+button {
+  margin: 5px;
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(45deg, pink, hotpink);
+  box-shadow: 0 0 15px pink;
+  cursor: pointer;
+  color: white;
+}
+
+/* 💖 TEXT CENTER */
+#text {
+  position: absolute;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-}
-
-.line {
   font-size: 38px;
-  margin: 15px 0;
-  opacity: 0;
+  color: pink;
   text-shadow: 0 0 20px pink, 0 0 40px hotpink;
+  text-align: center;
+  white-space: pre-line;
 }
 
-.show {
-  animation: fadeIn 2s forwards;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform: translateY(20px);}
-  to {opacity:1; transform: translateY(0);}
-}
-
-/* 🌹 ROSE (PURE CSS) */
+/* 🌹 ROSE */
 #rose {
   position: absolute;
-  bottom: 5%;
+  bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 200px;
-  height: 200px;
-
-  animation: sway 5s ease-in-out infinite,
-             breathe 4s ease-in-out infinite;
+  font-size: 60px;
+  animation: sway 4s infinite ease-in-out;
 }
 
-/* batang */
-.stem {
-  position: absolute;
-  width: 6px;
-  height: 120px;
-  background: linear-gradient(green, darkgreen);
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-}
-
-/* daun */
-.leaf {
-  position: absolute;
-  width: 40px;
-  height: 20px;
-  background: green;
-  border-radius: 50%;
-}
-
-.leaf.left {
-  left: 20px;
-  bottom: 40px;
-  transform: rotate(-30deg);
-}
-
-.leaf.right {
-  right: 20px;
-  bottom: 60px;
-  transform: rotate(30deg);
-}
-
-/* kelopak */
-.petal {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle, red, darkred);
-  border-radius: 50%;
-  top: 0;
-  left: 50%;
-  transform-origin: bottom center;
-  filter: drop-shadow(0 0 15px red);
-}
-
-/* posisi kelopak */
-.p1 { transform: translateX(-50%) rotate(0deg); }
-.p2 { transform: translateX(-50%) rotate(60deg); }
-.p3 { transform: translateX(-50%) rotate(120deg); }
-.p4 { transform: translateX(-50%) rotate(180deg); }
-.p5 { transform: translateX(-50%) rotate(240deg); }
-.p6 { transform: translateX(-50%) rotate(300deg); }
-
-/* animasi */
 @keyframes sway {
-  0% { transform: translateX(-50%) rotate(-2deg); }
-  50% { transform: translateX(-50%) rotate(2deg); }
-  100% { transform: translateX(-50%) rotate(-2deg); }
+  0% { transform: translateX(-50%) rotate(-3deg); }
+  50% { transform: translateX(-50%) rotate(3deg); }
+  100% { transform: translateX(-50%) rotate(-3deg); }
 }
 
-@keyframes breathe {
-  0%,100% { scale: 1; }
-  50% { scale: 1.05; }
-}
-
-/* sparkle */
-.sparkle {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: gold;
-  border-radius: 50%;
-  animation: sparkleAnim 2s infinite;
-}
-
-@keyframes sparkleAnim {
-  0% { opacity:1; transform: translateY(0);}
-  100% { opacity:0; transform: translateY(-40px);}
-}
-
+canvas { display: none; }
 </style>
 </head>
 
 <body>
 
-<div id="textBox">
-  <div id="t1" class="line">Hai Tiwi Cantikk 💖</div>
-  <div id="t2" class="line">Semoga aku bisa ngertiin kamu ya hehe...</div>
-  <div id="t3" class="line">Maaf kalau sering bikin kamu marah 💖</div>
-  <div id="t4" class="line">Love you sayang 💖</div>
+<!-- INTRO -->
+<div id="intro">
+  <h2 id="question">Hai kamu... hari ini gimana? 😊</h2>
+  <button onclick="start()">yuk lanjut 💖</button>
 </div>
 
-<!-- 🌹 ROSE -->
-<div id="rose">
-  <div class="stem"></div>
-  <div class="leaf left"></div>
-  <div class="leaf right"></div>
+<!-- TEXT -->
+<div id="text"></div>
 
-  <div class="petal p1"></div>
-  <div class="petal p2"></div>
-  <div class="petal p3"></div>
-  <div class="petal p4"></div>
-  <div class="petal p5"></div>
-  <div class="petal p6"></div>
-</div>
+<!-- ROSE -->
+<div id="rose">🌹</div>
+
+<canvas id="canvas"></canvas>
 
 <script>
-// TEXT TIMELINE
-setTimeout(()=>show("t1"),1000);
-setTimeout(()=>show("t2"),3000);
-setTimeout(()=>show("t3"),5000);
-setTimeout(()=>show("t4"),7000);
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
 
-function show(id){
-  document.getElementById(id).classList.add("show");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let flowers = [];
+let stars = [];
+
+// START
+function start() {
+  document.getElementById("intro").style.display = "none";
+  canvas.style.display = "block";
+
+  init();
+  animate();
+
+  playTexts();
 }
 
-// sparkle
-function sparkle(){
-  let s = document.createElement("div");
-  s.className = "sparkle";
+// ✍️ TYPE EFFECT
+function typeText(text, speed, callback) {
+  let i = 0;
+  let el = document.getElementById("text");
+  el.innerHTML = "";
 
-  let r = document.getElementById("rose").getBoundingClientRect();
-
-  s.style.left = r.left + Math.random()*r.width + "px";
-  s.style.top = r.top + Math.random()*r.height + "px";
-
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),2000);
+  let interval = setInterval(() => {
+    el.innerHTML += text.charAt(i);
+    i++;
+    if (i >= text.length) {
+      clearInterval(interval);
+      if (callback) setTimeout(callback, 2000);
+    }
+  }, speed);
 }
 
-setInterval(sparkle,150);
+// 🎬 TEXT FLOW
+function playTexts() {
+  typeText("Hai Tiwi Cantikk 💖", 50, () => {
+    typeText("Semoga aku bisa ngertiin kamu ya hehe...\nMaaf kalau sering bikin kamu marah 💔", 40, () => {
+      typeText("Love you sayang 💖", 60);
+    });
+  });
+}
+
+// 🌸 FLOWER
+function createFlower() {
+  return {
+    x: Math.random() * canvas.width,
+    y: canvas.height + Math.random() * 200,
+    size: 0,
+    maxSize: 2 + Math.random() * 5,
+    speed: 0.3 + Math.random(),
+    growth: 0.01 + Math.random() * 0.02,
+    sway: Math.random() * Math.PI * 2
+  };
+}
+
+// ⭐ STAR
+function createStar() {
+  return {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 1.5,
+    alpha: Math.random(),
+    twinkle: Math.random() * 0.02
+  };
+}
+
+function init() {
+  for (let i = 0; i < 80; i++) flowers.push(createFlower());
+  for (let i = 0; i < 150; i++) stars.push(createStar());
+}
+
+// DRAW
+function drawFlower(f) {
+  let g = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.size * 3);
+  g.addColorStop(0, "rgba(255,182,193,1)");
+  g.addColorStop(1, "rgba(255,105,180,0)");
+
+  ctx.beginPath();
+  ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+  ctx.fillStyle = g;
+  ctx.fill();
+}
+
+function drawStar(s) {
+  ctx.beginPath();
+  ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+  ctx.fillStyle = "white";
+  ctx.globalAlpha = s.alpha;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+// UPDATE
+function update() {
+  flowers.forEach(f => {
+    f.y -= f.speed;
+    f.sway += 0.02;
+    f.x += Math.sin(f.sway) * 0.5;
+
+    if (f.size < f.maxSize) f.size += f.growth;
+
+    if (f.y < -10) Object.assign(f, createFlower());
+  });
+
+  stars.forEach(s => {
+    s.alpha += s.twinkle;
+    if (s.alpha <= 0 || s.alpha >= 1) s.twinkle *= -1;
+  });
+}
+
+// LOOP
+function animate() {
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  stars.forEach(drawStar);
+  flowers.forEach(drawFlower);
+
+  update();
+  requestAnimationFrame(animate);
+}
 </script>
 
 </body>
